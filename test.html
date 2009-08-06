@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="processing.js"></script>
+        <script src="init.js"></script>
+        <style type="text/css">
+            body { background: #000; }
+        </style>
+    </head>
+    <body>
+        <center>
+        <script type="application/processing">
+            void setup() {
+                size(800, 600);
+                frameRate(500);
+            }
+
+            int ant_radius = 10;
+            int x=0;
+            int y=200;
+            void draw() {
+
+                background(0);
+
+                x = x + random(0, 2);
+                y = y + random(-2, 2);
+                draw_ant(x, y, ant_radius);
+            }
+
+
+            void draw_ant(int x, int y, int radius) {
+
+                ellipse(x, y, radius, radius);
+            }
+        </script><canvas width="800" height="600"></canvas>
+    </center>
+        </body>
+    </html>
