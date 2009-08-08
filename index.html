@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="processing.js"></script>
+        <script src="init.js"></script>
+        <style type="text/css">
+            body { background: #222; }
+        </style>
+    </head>
+    <body>
+        <center>
+        <script type="application/processing">
+
+            int width = 800;
+            int height = 600;
+
+            function Ant() {
+
+                this.direction = random(0.0, TWO_PI); // radians
+                this.speed = random(0.1, 1.0);        // pixels/clock
+
+                this.x = 200.0;
+                this.y = 200.0;
+                this.radius = 20;
+            }
+
+            Ant.prototype.draw = function() {
+
+                ellipse(this.x, this.y, this.radius, this.radius);
+            }
+
+            Ant.prototype.move = function() {
+
+                this.x = this.x + this.x_velocity();
+                this.y = this.y + this.y_velocity();
+            }
+
+            Ant.prototype.choose_direction = function() {
+
+                if (this.x >= width) {
+                    this.direction = PI;
+                }
+                else if (this.x <= 0) {
+                    this.direction = 0.0;
+                }
+                else if (this.y >= height) {
+                    this.direction = PI * 1.5;
+                }
+                else if (this.y <= 0) {
+                    this.direction = PI * 0.5;
+                }
+                else {
+                    //change directions by about 1 degree
+                    this.direction = this.direction + random(-0.02, 0.04);
+                }
+            }
+
+            Ant.prototype.x_velocity = function() {
+
+                return this.speed * cos(this.direction);
+            }
+
+            Ant.prototype.y_velocity = function() {
+
+                return this.speed * sin(this.direction);
+            }
+
+
+            void setup() {
+                size(800, 600);
+                frameRate(500);
+            }
+
+
+            ant1 = new Ant();
+            ant2 = new Ant();
+            ant3 = new Ant();
+
+            ant2.x = 450;
+            ant2.y = 100;
+            ant3.x = 600;
+            ant3.y = 400;
+
+
+            void draw() {
+
+                background(0);
+
+
+                ant1.choose_direction();
+                ant1.move();
+                ant1.draw();
+                ant2.choose_direction();
+                ant2.move();
+                ant2.draw();
+                ant3.choose_direction();
+                ant3.move();
+                ant3.draw();
+            }
+
+
+        </script><canvas width="800" height="600"></canvas>
+    </center>
+        </body>
+    </html>
