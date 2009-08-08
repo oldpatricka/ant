@@ -21,7 +21,7 @@
 
                 this.x = 200.0;
                 this.y = 200.0;
-                this.radius = 20;
+                this.radius = 5;
             }
 
             Ant.prototype.draw = function() {
@@ -70,32 +70,29 @@
                 size(800, 600);
                 frameRate(500);
             }
+            
+            var numAnts = random(1,10);
+            var ants = [];
+            var i;
 
+            for (i = 0; i<numAnts; i++) {
 
-            ant1 = new Ant();
-            ant2 = new Ant();
-            ant3 = new Ant();
-
-            ant2.x = 450;
-            ant2.y = 100;
-            ant3.x = 600;
-            ant3.y = 400;
+                ants[i] = new Ant();
+                ants[i].x = random(10, width-10);
+                ants[i].y = random(10, height-10);
+            }
 
 
             void draw() {
 
                 background(0);
 
+                for (i = 0; i<numAnts; i++) {
 
-                ant1.choose_direction();
-                ant1.move();
-                ant1.draw();
-                ant2.choose_direction();
-                ant2.move();
-                ant2.draw();
-                ant3.choose_direction();
-                ant3.move();
-                ant3.draw();
+                    ants[i].choose_direction();
+                    ants[i].move();
+                    ants[i].draw();
+                }
             }
 
 
