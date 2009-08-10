@@ -10,91 +10,103 @@
     <body>
         <center>
         <script type="application/processing">
+    function Ant() {
 
-            int width = 800;
-            int height = 600;
+        this.direction = random(0.0, TWO_PI); // radians
+        this.speed = random(0.1, 1.0);        // pixels/clock
 
-            function Ant() {
+        this.x = 200.0;
+        this.y = 200.0;
+        this.radius = 5;
+    }
 
-                this.direction = random(0.0, TWO_PI); // radians
-                this.speed = random(0.1, 1.0);        // pixels/clock
+    Ant.prototype.draw = function() {
 
-                this.x = 200.0;
-                this.y = 200.0;
-                this.radius = 5;
-            }
+        visible.ellipse(this.x, this.y, this.radius, this.radius);
+    }
 
-            Ant.prototype.draw = function() {
+    Ant.prototype.move = function() {
 
-                ellipse(this.x, this.y, this.radius, this.radius);
-            }
+        this.x = this.x + this.x_velocity();
+        this.y = this.y + this.y_velocity();
+    }
 
-            Ant.prototype.move = function() {
+    Ant.prototype.choose_direction = function() {
 
-                this.x = this.x + this.x_velocity();
-                this.y = this.y + this.y_velocity();
-            }
+        if (this.x >= width) {
+            this.direction = PI;
+        }
+        else if (this.x <= 0) {
+            this.direction = 0.0;
+        }
+        else if (this.y >= height) {
+            this.direction = PI + HALF_PI;
+        }
+        else if (this.y <= 0) {
+            this.direction = HALF_PI;
+        }
+        else {
+            this.direction = this.direction + random(random(-1.0,0.0), random(0.0, 1.0));
+        }
+    }
 
-            Ant.prototype.choose_direction = function() {
+    Ant.prototype.x_velocity = function() {
 
-                if (this.x >= width) {
-                    this.direction = PI;
-                }
-                else if (this.x <= 0) {
-                    this.direction = 0.0;
-                }
-                else if (this.y >= height) {
-                    this.direction = PI * 1.5;
-                }
-                else if (this.y <= 0) {
-                    this.direction = PI * 0.5;
-                }
-                else {
-                    //change directions by about 1 degree
-                    this.direction = this.direction + random(-0.02, 0.04);
-                }
-            }
+        return this.speed * cos(this.direction);
+    }
 
-            Ant.prototype.x_velocity = function() {
+    Ant.prototype.y_velocity = function() {
 
-                return this.speed * cos(this.direction);
-            }
-
-            Ant.prototype.y_velocity = function() {
-
-                return this.speed * sin(this.direction);
-            }
+        return this.speed * sin(this.direction);
+    }
 
 
-            void setup() {
-                size(800, 600);
-                frameRate(500);
-            }
-            
-            var numAnts = random(1,10);
-            var ants = [];
-            var i;
+    void setup() {
+        size(800, 600);
+        scent = createGraphics(800, 600, P3D);
+        visible = createGraphics(800, 600, P3D);
+     }
 
-            for (i = 0; i<numAnts; i++) {
+    var numAnts = random(1,10);
+    var ants = [];
+    var i;
 
-                ants[i] = new Ant();
-                ants[i].x = random(10, width-10);
-                ants[i].y = random(10, height-10);
-            }
+    for (i = 0; i<numAnts; i++) {
+
+        ants[i] = new Ant();
+        ants[i].x = random(10, width-10);
+        ants[i].y = random(10, height-10);
+    }
 
 
-            void draw() {
+    void draw() {
 
-                background(0);
+        background(100);
 
-                for (i = 0; i<numAnts; i++) {
+        visible.beginDraw();
+        visible.background(0);
+        visible.noStroke();
+        visible.fill(255);
+        scent.beginDraw();
+        scent.background(0,0);
+        scent.stroke(0,255,0, 50);
 
-                    ants[i].choose_direction();
-                    ants[i].move();
-                    ants[i].draw();
-                }
-            }
+        for (i = 0; i<numAnts; i++) {
 
+            // Draw scent layer
+            scent.point(ants[i].x, ants[i].y);
+
+            // Draw visible layer
+            ants[i].choose_direction();
+            ants[i].move();
+            ants[i].draw();
+        }
+
+        scent.endDraw();
+        visible.endDraw();
+        image(visible, 0, 0);
+        image(scent, 0, 0);
+    }
 
         </script><canvas width="800" height="600"></canvas>
     </center>
