@@ -65,7 +65,7 @@
         size(800, 600);
         scent = createGraphics(800, 600, P3D);
         visible = createGraphics(800, 600, P3D);
-        scent.stroke(0,255,0, 50);
+        scent.stroke(0,255,0);
         visible.noStroke();
         visible.fill(255);
      }
@@ -87,7 +87,7 @@
 
         scent.beginDraw();
         if (count > 10) {
-            scent.fill(0,1);
+            scent.fill(0,10);
             scent.rectMode(CORNER);
             scent.rect(-1,-1,width+2,height+2);
             count = 0;
